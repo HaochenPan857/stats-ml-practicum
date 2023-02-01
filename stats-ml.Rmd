@@ -1,7 +1,7 @@
 ---
 title: "Statistics and ML"
 subtitle: "MSSP Practicum Discussion"
-author: "MSSP Practicum II"
+author: "Haochen Pan"
 date: "2023-01-24"
 output: html_document
 ---
@@ -65,7 +65,11 @@ Questions and tasks:
 
 - Comment on the fit, plot residuals and comment on them.
 - Comment on the prediction; does it seem reasonable?
-
+```{r stats1}
+plot(m)
+```
+The predict plot gives clear changes on variables, which can help us make easy predictions. For the residual plot, the Scale-Location shows many outliers plots, 
+The linear regression fit is the most common prediction. The biggest advantage of this models is linearity. It makes the estimation procedure simple and these linear equations have an easy to understand. Sometimes it can be the 1st model to use. But the disadvantage is that it only Looks at the Mean of the Dependent Variable
 
 ## ML 1: LOESS
 
@@ -76,12 +80,18 @@ ggplot(canopy, aes(distance, cover)) + geom_point(col = "gray") +
 predict(m, data.frame(distance = 0.5), se = TRUE)
 ```
 
+```{r ml1}
+plot(m)
+```
+
+
 Questions and tasks:
 
 - Check the definition of the `loess` function; how does it differ from the previous approach?
 - Comment on the fit; does it seem reasonable?
 - Comment on the prediction, including the SE.
 
+LOESS is a nonparametric method for smoothing a series of data in which no assumptions are made about the underlying structure of the data. LOESS uses local regression to fit a smooth curve through a scatterplot of data. Comparing to linear regression, the $se.fit and $ residual are more accurate. Comparing to the most basic method, it is more resonable.  
 
 ## ML 2: Random Forest
 
@@ -100,6 +110,8 @@ Questions and tasks:
 - Comment on the prediction; how would you obtain a measure of uncertainty?
 
 
+Random Forest in R has an advantage, which is its avoids overfitting. (But my r is not 4.2.2, there is something wrong with the plotting and coding, sorry about that)
+
 ## Statistics 2: Cubic Fit
 
 ```{r stats2}
@@ -107,6 +119,7 @@ m <- glm(cover ~ poly(distance, 3), data = canopy, family = quasibinomial)
 ggplot(canopy, aes(distance, cover)) + geom_point(col = "gray") +
   geom_line(aes(distance[idx], fitted(m)[idx]))
 predict(m, data.frame(distance = 0.5), se = TRUE, type = "response")
+plot(m)
 ```
 
 Questions and tasks:
@@ -114,7 +127,8 @@ Questions and tasks:
 - Comment on the fit and compare it to the first model; plot and check residuals.
 - Comment on the prediction and compare it to previous results.
 - How would you know that a cubic fit is good enough?
-
+Poly code is not same as the linear model, it can help understand the true underlying relationship. From the plot, you can see the line is not that linear, which means ploy may be better use in the situation. 
+Besides residuals, The sum of squares due to error (SSE) R-square Adjusted R-square Root mean squared error (RMSE) are ways to check the cubic fit. 
 
 ## Discussion
 
@@ -122,6 +136,8 @@ Let's try to connect all lessons learned from your work and the discussions.
 Elaborate more on the following questions:
 
 - How would you know that the predictions are *reliable*?
+Check outcomes, residuals, r squares?
+
 - How would you test that the cover is exactly 50% at the boundary (`distance` = 0.5)? Which approaches would make the test easier to perform?
 - How would you incorporate `location` in your analyses? How would you know that
 it is meaningful to use it?
